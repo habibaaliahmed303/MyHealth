@@ -1,0 +1,677 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY HEALTH</title>
+  <link rel = "icon" href="WhatsApp Image 2026-05-11 at 10.55.35 AM.jpeg">
+  <style>
+    /* ── CSS Variables ── */
+    :root {
+      --bg:          #e8f0ec;
+      --bg2:         #f4f9f6;
+      --card:        #ffffff;
+      --text:        #1a2e2a;
+      --text-muted:  #4a6b5f;
+      --border:      #c3ddd3;
+      --green:       #3ecf8e;
+      --blue:        #3b9eff;
+      --teal:        #2bc4b4;
+      --grad:        linear-gradient(135deg, #3ecf8e 0%, #3b9eff 100%);
+      --grad-soft:   linear-gradient(135deg, #a8f0d8 0%, #b8dcff 100%);
+      --shadow:      0 4px 20px rgba(60,160,120,.15);
+      --shadow-lg:   0 8px 40px rgba(60,160,120,.25);
+      --radius:      16px;
+      --transition:  .3s ease;
+    }
+    [data-theme="dark"] {
+      --bg:          #0f1e1a;
+      --bg2:         #162620;
+      --card:        #1e342c;
+      --text:        #d4f0e4;
+      --text-muted:  #7ab89a;
+      --border:      #2a4a3a;
+      --shadow:      0 4px 20px rgba(0,0,0,.4);
+      --shadow-lg:   0 8px 40px rgba(0,0,0,.6);
+    }
+    .var1 {
+        background-color: rgb(0, 71, 171);
+        position: fixed;
+        bottom:0;
+        left: 0;
+        width :100%;
+        z-index: 1000;
+        box-shadow: 0 -2px 5px rgba (0,0,0,0.2);
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+
+       }
+       .var1 a { 
+        padding: 8px 16px;
+        background-color: rgb(102,191,42);
+       }
+     
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background var(--transition), color var(--transition);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      padding: 48px 20px 0;
+    }
+    header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 5rem);
+      letter-spacing: .08em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    header .tagline {
+      font-size: .95rem;
+      color: var(--text-muted);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .hero-wrapper {
+      width: 100%;
+      max-height: 480px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 3px solid transparent;
+      background: var(--grad);
+      padding: 3px;
+      box-shadow: var(--shadow-lg);
+    }
+    .hero-wrapper img {
+      width: 100%;
+      height: 100%;
+      max-height: 474px;
+      object-fit: cover;
+      border-radius: calc(var(--radius) - 3px);
+      display: block;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 40px 24px 120px;
+    }
+
+    /* ── Section headings ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .section-label h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: .06em;
+      color: var(--text);
+    }
+    .section-label span.line {
+      flex: 1;
+      height: 2px;
+      background: var(--grad-soft);
+      border-radius: 2px;
+    }
+
+    /* ── Equipment Grid ── */
+    #home-page { animation: fadeIn .4s ease; }
+
+    .equipment-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    @media (max-width: 900px)  { .equipment-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 580px)  { .equipment-grid { grid-template-columns: 1fr; } }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      position: relative;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--teal);
+    }
+
+    /* Tooltip on hover */
+    .card::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) scale(.92);
+      background: var(--grad);
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      padding: 7px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      z-index: 10;
+      box-shadow: 0 4px 16px rgba(62,207,142,.35);
+    }
+    .card:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    .card-img-wrap {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .45s ease;
+    }
+    .card:hover .card-img-wrap img { transform: scale(1.07); }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11,40,30,.55) 0%, transparent 60%);
+    }
+    .card-body {
+      padding: 16px 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .card-body h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .card-arrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grad-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .card:hover .card-arrow { background: var(--grad); transform: scale(1.15); }
+    .card-arrow svg { width: 14px; height: 14px; stroke: var(--teal); fill: none; }
+    .card:hover .card-arrow svg { stroke: #fff; }
+
+    /* ── Detail Page ── */
+    #detail-page {
+      display: none;
+      animation: fadeIn .4s ease;
+    }
+    #detail-page.active { display: block; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-bottom: 32px;
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+      box-shadow: var(--shadow);
+    }
+    .back-btn:hover {
+      border-color: var(--teal);
+      box-shadow: 0 4px 20px rgba(43,196,180,.3);
+    }
+    .back-btn svg { width: 16px; height: 16px; stroke: var(--teal); fill: none; stroke-width: 2.5; }
+
+    .detail-hero {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    @media (max-width: 860px) { .detail-hero { grid-template-columns: 1fr; } }
+
+    .detail-img-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 3px solid transparent;
+      background: var(--grad);
+      padding: 3px;
+      box-shadow: var(--shadow-lg);
+    }
+    .detail-img-wrap img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      border-radius: calc(var(--radius) - 3px);
+      display: block;
+    }
+
+    .detail-info-grid {
+      display: grid;
+      gap: 20px;
+    }
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
+      transition: border-color var(--transition);
+    }
+    .info-card:hover { border-color: var(--teal); }
+    .info-card h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: .08em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .info-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .info-card ul li {
+      font-size: .9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      padding-left: 18px;
+      position: relative;
+    }
+    .info-card ul li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .quick-tip {
+      background: var(--grad);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 16px 22px;
+      font-size: .95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(62,207,142,.3);
+    }
+    .quick-tip span.bulb { font-size: 1.4rem; }
+
+    /* ── Dark Mode Toggle ── */
+    #theme-toggle {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--grad);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(62,207,142,.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      transition: transform var(--transition), box-shadow var(--transition);
+      z-index: 100;
+    }
+    #theme-toggle:hover {
+      transform: scale(1.12) rotate(15deg);
+      box-shadow: 0 8px 32px rgba(62,207,142,.6);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .card { animation: fadeIn .45s ease both; }
+    .card:nth-child(1)  { animation-delay: .05s; }
+    .card:nth-child(2)  { animation-delay: .10s; }
+    .card:nth-child(3)  { animation-delay: .15s; }
+    .card:nth-child(4)  { animation-delay: .20s; }
+    .card:nth-child(5)  { animation-delay: .25s; }
+    .card:nth-child(6)  { animation-delay: .30s; }
+    .card:nth-child(7)  { animation-delay: .35s; }
+    .card:nth-child(8)  { animation-delay: .40s; }
+    .card:nth-child(9)  { animation-delay: .45s; }
+    .card:nth-child(10) { animation-delay: .50s; }
+    .card:nth-child(11) { animation-delay: .55s; }
+    .card:nth-child(12) { animation-delay: .60s; }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <h1>Smart Equipment<br>for Smart Health</h1>
+  <p class="tagline">Explore Our Full Machine Collection</p>
+  <div class="hero-wrapper">
+    <img src="gym/head2.jpeg" alt="Gym Equipment Showroom">
+  </div>
+</header>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <!-- HOME PAGE -->
+  <div id="home-page">
+    <div class="section-label">
+      <h2>Our Machines</h2>
+      <span class="line"></span>
+    </div>
+
+    <div class="equipment-grid" id="equipment-grid">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+
+  <!-- DETAIL PAGE -->
+  <div id="detail-page">
+    <button class="back-btn" id="back-btn">
+      <svg viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to All Machines
+    </button>
+    <div id="detail-content"></div>
+  </div>
+
+</main>
+
+<!-- ── DARK MODE TOGGLE ── -->
+<button id="theme-toggle" title="Toggle Dark Mode">🌙</button>
+
+<script>
+  /* ─────────── DATA ─────────── */
+  const machines = [
+    {
+      id: 'smith',
+      name: 'Smith Machine',
+      img: 'gym/smith.jpeg',
+      tooltip: 'Full-Body Compound Training',
+      muscles:  { primary: ['Varies by exercise (Quadriceps, Chest, Shoulders)'], secondary: ['Glutes', 'Hamstrings', 'Triceps', 'Core'] },
+      steps:    ['Position your body under or in front of the bar depending on the exercise.','Set the bar height and load the desired weight.','Grip the bar evenly on both sides.','Unrack the bar by rotating it to release the hooks.','Perform the movement along the fixed path of the machine.','Maintain control throughout the full range of motion.','Re-rack the bar by rotating it back into the hooks.'],
+      form:     ['Keep a neutral spine throughout the movement.','Engage your core for stability.','Adjust your stance to match the bar path.','Control both lifting and lowering phases.'],
+      mistakes: ['Poor body positioning relative to the bar path.','Relying too much on the machine for balance.','Locking joints aggressively.','Using excessive weight.','Ignoring full range of motion.'],
+      tip:      'Adjust your stance, not the bar path, to fit your natural movement.'
+    },
+    {
+      id: 'leg',
+      name: 'Leg Extension Machine',
+      img: 'gym/leg.jpeg',
+      tooltip: 'Quadriceps Isolation',
+      muscles:  { primary: ['Quadriceps'], secondary: ['None'] },
+      steps:    ['Sit on the machine with your back fully supported.','Place your ankles behind the padded bar.','Align your knees with the machine\'s pivot point.','Grip the handles for stability.','Extend your legs upward until almost straight.','Squeeze your quadriceps at the top.','Lower the weight slowly back to the start.'],
+      form:     ['Keep your back flat against the seat.','Align knees with the machine axis.','Move in a slow, controlled range.','Keep toes pointing forward.'],
+      mistakes: ['Swinging the weight instead of controlling it.','Locking the knees forcefully.','Using excessive weight.','Lifting hips off the seat.','Partial range of motion.'],
+      tip:      'Pause briefly at the top for a stronger quadriceps contraction.'
+    },
+    {
+      id: 'hack',
+      name: 'Hack Squat Machine',
+      img: 'gym/hack.jpeg',
+      tooltip: 'Quad-Dominant Squat Pattern',
+      muscles:  { primary: ['Quadriceps'], secondary: ['Glutes', 'Hamstrings', 'Calves'] },
+      steps:    ['Step into the machine and position your shoulders under the pads.','Place your feet shoulder-width apart on the platform.','Keep your back flat against the support.','Release the safety handles.','Lower your body by bending your knees slowly.','Go down until your thighs are about parallel.','Push through your heels to return up.','Stop just before locking your knees.'],
+      form:     ['Keep your back fully pressed against the pad.','Keep your knees aligned with your toes.','Engage your core throughout the movement.','Maintain a controlled tempo.'],
+      mistakes: ['Letting the knees collapse inward.','Locking the knees at the top.','Using excessive weight.','Lifting heels off the platform.','Not going deep enough.'],
+      tip:      'Push through your heels, not your toes.'
+    },
+    {
+      id: 'seated',
+      name: 'Seated Leg Curl Machine',
+      img: 'gym/seated.jpeg',
+      tooltip: 'Hamstring Isolation',
+      muscles:  { primary: ['Hamstrings'], secondary: ['Gastrocnemius'] },
+      steps:    ['Sit on the machine with your back fully supported.','Align your knees with the machine\'s pivot point.','Place your lower legs behind the padded lever.','Secure your thighs under the support pads.','Curl your legs back by bending your knees.','Squeeze your hamstrings at the end of the movement.','Return slowly to the starting position.'],
+      form:     ['Keep your back firmly against the seat.','Do not lift your hips during the movement.','Control both curl and return phases.','Keep movement smooth and steady.'],
+      mistakes: ['Using momentum instead of control.','Lifting hips off the seat.','Using excessive weight.','Not using full range of motion.','Dropping the weight too quickly.'],
+      tip:      'Hold the contraction for a second before returning slowly.'
+    },
+    {
+      id: 'hip',
+      name: 'Hip Adductor Machine',
+      img: 'gym/hip.jpeg',
+      tooltip: 'Inner Thigh Strengthening',
+      muscles:  { primary: ['Adductors (Inner Thigh)'], secondary: ['Gracilis', 'Pectineus'] },
+      steps:    ['Sit on the machine with your back supported.','Place your legs outside the pads.','Adjust the starting position for a comfortable stretch.','Grip the handles for stability.','Bring your legs inward against the pads.','Squeeze your inner thighs at the end of the movement.','Return slowly to the starting position.'],
+      form:     ['Keep your back flat against the seat.','Move in a slow and controlled manner.','Avoid leaning forward or using momentum.','Keep your core engaged for stability.'],
+      mistakes: ['Using momentum instead of muscle control.','Closing legs too fast without control.','Using excessive weight.','Partial range of motion.','Lifting hips off the seat.'],
+      tip:      'Focus on a slow squeeze inward and control the return phase.'
+    },
+    {
+      id: 'legpress',
+      name: 'Leg Press Machine',
+      img: 'gym/legpress.jpeg',
+      tooltip: 'Lower Body Power Builder',
+      muscles:  { primary: ['Quadriceps'], secondary: ['Glutes', 'Hamstrings', 'Calves'] },
+      steps:    ['Sit on the machine with your back flat against the pad.','Place your feet shoulder-width apart on the platform.','Release the safety handles.','Lower the platform by bending your knees slowly.','Stop when your knees reach about a 90-degree angle.','Push through your heels to extend your legs.','Stop just before locking your knees.'],
+      form:     ['Keep your lower back pressed against the seat.','Align your knees with your toes.','Keep your heels flat on the platform.','Control the movement throughout.'],
+      mistakes: ['Locking the knees at the top.','Lowering the weight too fast.','Letting the lower back lift off the seat.','Placing feet too low on the platform.','Using excessive weight.'],
+      tip:      'Control the descent more than the ascent.'
+    },
+    {
+      id: 'seatedcalf',
+      name: 'Seated Calf Raise Machine',
+      img: 'gym/seatedcalf.jpeg',
+      tooltip: 'Soleus Deep Calf Training',
+      muscles:  { primary: ['Soleus'], secondary: ['Gastrocnemius'] },
+      steps:    ['Sit on the machine and place pads over your knees.','Position the balls of your feet on the footrest.','Adjust pad height to fit snugly.','Push up onto your toes as high as possible.','Hold briefly at the peak contraction.','Lower your heels slowly below the footrest level.','Repeat with full range of motion.'],
+      form:     ['Keep your torso upright throughout.','Full stretch at the bottom adds muscle length.','Avoid bouncing at the bottom.','Perform slow, deliberate reps.'],
+      mistakes: ['Using momentum to bounce the weight.','Not reaching full extension.','Placing feet incorrectly on the plate.','Using excessive weight.','Skipping the stretch at the bottom.'],
+      tip:      'Go slow on the way down for maximum soleus activation.'
+    },
+    {
+      id: 'hipabductor',
+      name: 'Hip Abductor Machine',
+      img: 'gym/hipabductor.jpeg',
+      tooltip: 'Outer Glute & Hip Training',
+      muscles:  { primary: ['Gluteus Medius', 'Gluteus Minimus'], secondary: ['Tensor Fasciae Latae'] },
+      steps:    ['Sit on the machine with your back against the support.','Place your legs inside the pads.','Adjust the pads so your knees are at a comfortable position.','Push your legs outward against the pads.','Squeeze your outer glutes at the widest point.','Return slowly to the starting position.','Keep movements controlled throughout.'],
+      form:     ['Sit tall and keep your core engaged.','Avoid leaning to one side.','Move symmetrically on both sides.','Slow, controlled reps beat fast ones.'],
+      mistakes: ['Using too much weight and losing form.','Leaning the torso sideways.','Not achieving full range.','Bouncing or jerking the weight.','Lifting hips off the seat.'],
+      tip:      'Squeeze and hold at the widest point for 1 second.'
+    },
+    {
+      id: 'standing',
+      name: 'Standing Calf Raise Machine',
+      img: 'gym/standing.jpeg',
+      tooltip: 'Gastrocnemius Calf Builder',
+      muscles:  { primary: ['Gastrocnemius'], secondary: ['Soleus'] },
+      steps:    ['Step under the shoulder pads and position the balls of your feet on the platform.','Keep your legs straight with a slight bend at the knee.','Rise up onto your toes as high as possible.','Hold at the top for a moment.','Lower your heels as far as comfortable below the platform.','Repeat with a full range of motion.'],
+      form:     ['Keep your back straight and core tight.','Equal weight on both feet.','Rise fully onto the toes.','Control the descent fully.'],
+      mistakes: ['Bending the knees excessively.','Using partial range of motion.','Rushing through reps.','Not loading the stretch at the bottom.','Using excessive weight.'],
+      tip:      'Rise all the way up and lower all the way down for full muscle engagement.'
+    },
+    {
+      id: 'glute',
+      name: 'Glute Kickback Machine',
+      img: 'gym/glute.jpeg',
+      tooltip: 'Glute Isolation & Shaping',
+      muscles:  { primary: ['Gluteus Maximus'], secondary: ['Hamstrings', 'Core'] },
+      steps:    ['Position yourself on the machine per the manufacturer instructions.','Secure your foot or lower leg against the pad.','Keep your supporting leg stable.','Push the pad back and up in a controlled arc.','Squeeze your glute at the peak of the movement.','Return slowly to the start without dropping the weight.','Complete all reps on one side before switching.'],
+      form:     ['Keep your hips square and level.','Avoid rotating your torso.','Engage your core throughout.','Focus on the glute, not the lower back.'],
+      mistakes: ['Arching the lower back excessively.','Using momentum instead of glute contraction.','Not squeezing at the top.','Kicking too high and losing form.','Using excessive weight.'],
+      tip:      'Think about pushing through the heel to better activate the glute.'
+    },
+    {
+      id: 'hipthrust',
+      name: 'Hip Thrust Machine',
+      img: 'gym/hipthrust.jpeg',
+      tooltip: 'Peak Glute Activation',
+      muscles:  { primary: ['Gluteus Maximus'], secondary: ['Hamstrings', 'Core', 'Hip Flexors'] },
+      steps:    ['Sit on the machine and position the pad across your hips.','Plant your feet flat on the platform shoulder-width apart.','Lean back against the support.','Push your hips upward by squeezing your glutes.','Drive up until your body forms a straight line from knees to shoulders.','Hold at the top for a beat.','Lower your hips slowly back down.'],
+      form:     ['Keep your chin tucked and core braced.','Feet flat and knees tracking over toes.','Drive through heels, not toes.','Full extension at the top.'],
+      mistakes: ['Hyperextending the lower back at the top.','Not driving through the heels.','Using momentum to swing the weight.','Incomplete range of motion.','Excessive weight too early.'],
+      tip:      'Squeeze your glutes hard at the top and hold for 2 seconds.'
+    },
+    {
+      id: 'lying',
+      name: 'Lying Leg Curl Machine',
+      img: 'gym/lying.jpeg',
+      tooltip: 'Prone Hamstring Isolation',
+      muscles:  { primary: ['Hamstrings'], secondary: ['Gastrocnemius', 'Glutes'] },
+      steps:    ['Lie face-down on the machine pad.','Align your knees just over the edge of the bench.','Place your ankles under the padded lever.','Hold the handles for support.','Curl your legs toward your glutes by bending the knees.','Squeeze your hamstrings at full flexion.','Lower the weight slowly and with control.'],
+      form:     ['Keep your hips pressed down throughout.','Avoid arching your lower back.','Use smooth, controlled movement.','Flex at the knee, not the hip.'],
+      mistakes: ['Lifting your hips to assist the curl.','Using too much weight.','Dropping the weight without control.','Not achieving full range of motion.','Jerking through the movement.'],
+      tip:      'Plantar-flex your feet (point toes) during the curl for a stronger hamstring contraction.'
+    },
+  ];
+
+  /* ─────────── RENDER CARDS ─────────── */
+  const grid = document.getElementById('equipment-grid');
+  machines.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.setAttribute('data-tooltip', m.tooltip);
+    card.innerHTML = `
+      <div class="card-img-wrap">
+        <img src="${m.img}" alt="${m.name}" loading="lazy">
+        <div class="card-overlay"></div>
+      </div>
+      <div class="card-body">
+        <h3>${m.name}</h3>
+        <div class="card-arrow">
+          <svg viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => openDetail(m));
+    grid.appendChild(card);
+  });
+
+  /* ─────────── DETAIL VIEW ─────────── */
+  function openDetail(m) {
+    const homePage   = document.getElementById('home-page');
+    const detailPage = document.getElementById('detail-page');
+    const content    = document.getElementById('detail-content');
+
+    const toList = arr => arr.map(i => `<li>${i}</li>`).join('');
+
+    content.innerHTML = `
+      <div class="detail-hero">
+        <div>
+          <div class="detail-img-wrap">
+            <img src="${m.img}" alt="${m.name}">
+          </div>
+        </div>
+        <div class="detail-info-grid">
+          <div class="info-card">
+            <h4>Machine Name</h4>
+            <ul><li>${m.name}</li></ul>
+          </div>
+          <div class="info-card">
+            <h4>Target Muscles</h4>
+            <ul>
+              <li><strong>Primary:</strong> ${m.muscles.primary.join(', ')}</li>
+              <li><strong>Secondary:</strong> ${m.muscles.secondary.join(', ')}</li>
+            </ul>
+          </div>
+          <div class="quick-tip">
+            <span class="bulb">💡</span>
+            <span>${m.tip}</span>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:8px;">
+        <div class="info-card">
+          <h4>How to Use</h4>
+          <ul>${toList(m.steps)}</ul>
+        </div>
+        <div class="info-card">
+          <h4>Proper Form</h4>
+          <ul>${toList(m.form)}</ul>
+        </div>
+        <div class="info-card">
+          <h4>Common Mistakes</h4>
+          <ul>${toList(m.mistakes)}</ul>
+        </div>
+      </div>`;
+
+    homePage.style.display   = 'none';
+    detailPage.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.getElementById('back-btn').addEventListener('click', () => {
+    document.getElementById('home-page').style.display  = 'block';
+    document.getElementById('detail-page').classList.remove('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ─────────── DARK MODE ─────────── */
+  const toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', () => {
+    const html  = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    toggle.textContent = isDark ? '🌙' : '☀️';
+  });
+
+</script>
+<var class = "var1">
+  <a href = "profile.html"  >profile</a>
+ <a href ="#con" >contact us</a>
+ <a href = "home.html" >Home page </a>
+</var>
+</body>
+</html>
