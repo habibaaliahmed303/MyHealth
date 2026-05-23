@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY HEALTH - Gym</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+            padding-top: 80px;
+            padding-bottom: 65px;
+        }
+        body.dark {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark .machine-card {
+            background-color: #1e1e1e;
+            border-color: #3a3a3a;
+        }
+        body.dark .machine-card:hover {
+            border-color: #66bf2a;
+            background-color: #252525;
+        }
+        body.dark .detail-section {
+            background-color: #1e1e1e;
+            border-color: #3a3a3a;
+        }
+        body.dark h1, body.dark h2.section-title {
+            color: #66bf2a;
+        }
+        body.dark .detail-section h2 {
+            color: #66bf2a;
+        }
+        body.dark .machine-card h3 {
+            color: #66bf2a;
+        }
+
+        /* ===== الهيدر العلوي الثابت ===== */
+        .top-header {
+            background-color: #0047ab;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .top-header img.logo {
+            border-radius: 8px;
+            height: 55px;
+            width: auto;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 15px;
+        }
+        .nav-links a:hover { background-color: rgba(255,255,255,0.2); }
+        .nav-links button {
+            background-color: #66bf2a;
+            color: white;
+            border: none;
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        .nav-links button:hover { background-color: #4fa01e; }
+
+        /* ===== عنوان الصفحة ===== */
+        h1 {
+            text-align: center;
+            color: #0047ab;
+            font-size: 36px;
+            padding: 25px 20px 10px;
+            border-bottom: 3px solid #66bf2a;
+        }
+
+        /* ===== صورة الغلاف ===== */
+        .hero-img {
+            display: block;
+            width: calc(100% - 60px);
+            max-height: 400px;
+            object-fit: cover;
+            border: 4px solid #0047ab;
+            border-radius: 16px;
+            margin: 20px 30px 30px;
+        }
+
+        /* ===== عنوان قسم الأجهزة ===== */
+        h2.section-title {
+            color: #0047ab;
+            font-size: 26px;
+            border-bottom: 2px solid #66bf2a;
+            display: inline-block;
+            margin: 10px 30px 20px;
+            padding-bottom: 6px;
+        }
+
+        /* ===== كروت الأجهزة (3 في صف) ===== */
+        .machine-card {
+            display: inline-block;
+            width: 28%;
+            margin: 1% 2%;
+            vertical-align: top;
+            background-color: white;
+            border: 2px solid #0047ab;
+            border-radius: 12px;
+            text-align: center;
+            padding-bottom: 12px;
+        }
+        .machine-card:hover {
+            border-color: #66bf2a;
+            background-color: #f0fbf0;
+        }
+        .machine-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 2px solid #0047ab;
+        }
+        .machine-card h3 {
+            color: #0047ab;
+            font-size: 15px;
+            margin: 10px 6px 4px;
+        }
+
+        /* ===== خط فاصل ===== */
+        hr.divider {
+            border: none;
+            border-top: 3px solid #0047ab;
+            margin: 40px 30px 20px;
+        }
+
+        /* ===== قسم تفاصيل كل جهاز ===== */
+        .detail-section {
+            background-color: white;
+            border: 2px solid #0047ab;
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin: 20px 30px;
+        }
+        .back-btn {
+            display: inline-block;
+            background-color: #0047ab;
+            color: white;
+            padding: 8px 22px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+        .back-btn:hover { background-color: #66bf2a; }
+
+        .detail-section img {
+            width: 360px;
+            height: auto;
+            border: 3px solid #0047ab;
+            border-radius: 12px;
+            display: block;
+            margin-bottom: 18px;
+        }
+        .detail-section h2 {
+            color: #0047ab;
+            border-left: 5px solid #66bf2a;
+            padding-left: 10px;
+            margin-top: 18px;
+            font-size: 20px;
+        }
+        .detail-section li {
+            font-size: 16px;
+            color: #2a2a2a;
+            line-height: 1.6;
+            margin: 6px 0;
+        }
+        body.dark .detail-section li { color: #d0d0d0; }
+
+        .tip-box {
+            background-color: #e8f5e0;
+            border: 2px solid #0047ab;
+            border-radius: 10px;
+            padding: 12px 18px;
+            color: #1a4a10;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 12px;
+        }
+        body.dark .tip-box {
+            background-color: #1a2e1a;
+            color: #a0f060;
+            border-color: #66bf2a;
+        }
+
+        /* ===== أيقونة الدارك مود ===== */
+        #dark-toggle {
+            position: fixed;
+            bottom: 75px;
+            right: 20px;
+            background-color: #0047ab;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        }
+        #dark-toggle:hover { background-color: #66bf2a; }
+
+        /* ===== تواصل معنا ===== */
+        #contact {
+            background-color: #0047ab;
+            color: white;
+            text-align: center;
+            padding: 40px 30px;
+            margin-top: 30px;
+        }
+        #contact h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #66bf2a;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+        #contact p { font-size: 16px; margin: 8px 0; }
+        #contact a { color: #a0f060; text-decoration: none; }
+        #contact a:hover { text-decoration: underline; }
+
+        /* ===== الشريط السفلي الثابت ===== */
+        .bottom-nav {
+            background-color: #0047ab;
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.3);
+        }
+        .bottom-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 14px 20px;
+            display: block;
+            flex: 1;
+            text-align: center;
+            background-color: #66bf2a;
+            border-right: 2px solid #0047ab;
+        }
+        .bottom-nav a:last-child { border-right: none; }
+        .bottom-nav a:hover { background-color: #4fa01e; }
+    </style>
+</head>
+<body id="top">
+
+    <div class="top-header">
+        <img class="logo" src="gym/my (1).jpg" alt="MY HEALTH Logo">
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="gym.html">Gym</a>
+            <a href="profile.html"><button>Sign In</button></a>
+        </div>
+    </div>
+
+    <h1>Smart Equipment for Smart Health</h1>
+    <img class="hero-img" src="gym/head2.jpeg" alt="Gym Equipment Showroom">
+
+    <h2 class="section-title">Our Machines</h2>
+
+    <div class="machine-card">
+        <a href="#smith"><img src="gym/smith.jpeg" alt="Smith Machine" title="Smith Machine"></a>
+        <h3>Smith Machine</h3>
+    </div>
+    <div class="machine-card">
+        <a href="#leg"><img src="gym/leg.jpeg" alt="Leg Extension Machine" title="Leg Extension Machine"></a>
+        <h3>Leg Extension Machine</h3>
+    </div>
+    <div class="machine-card">
+        <a href="#hack"><img src="gym/hack.jpeg" alt="Hack Squat Machine" title="Hack Squat Machine"></a>
+        <h3>Hack Squat Machine</h3>
+    </div>
+
+    <div class="machine-card">
+        <a href="#seated"><img src="gym/seated.jpeg" alt="Seated Leg Curl Machine" title="Seated Leg Curl Machine"></a>
+        <h3>Seated Leg Curl Machine</h3>
+    </div>
+    <div class="machine-card">
+        <a href="#hipadd"><img src="gym/hip.jpeg" alt="Hip Adductor Machine" title="Hip Adductor Machine"></a>
+        <h3>Hip Adductor Machine</h3>
+    </div>
+    <div class="machine-card">
+        <a href="#legpress"><img src="gym/legpress.jpeg" alt="Leg Press Machine" title="Leg Press Machine"></a>
+        <h3>Leg Press Machine</h3>
+    </div>
+
+    <div class="machine-card">
+        <a href="#seatedcalf"><img src="gym/seatedcalf.jpeg" alt="Seated Calf Raise Machine" title="Seated Calf Raise Machine"></a>
+        <h3>Seated Calf Raise Machine</h3>
+    </div>
+    <div class="machine-card">
+        <a href="#hipabductor"><img src="gym/hipabductor.jpeg" alt="Hip Abductor Machine" title="Hip Abductor Machine"></a>
+        <h3>Hip Abductor Machine</h3>
+    </div>
+    <div class="machine-card">
+        <a href="#standing"><img src="gym/standing.jpeg" alt="Standing Calf Raise Machine" title="Standing Calf Raise Machine"></a>
+        <h3>Standing Calf Raise Machine</h3>
+    </div>
+
+    <div class="machine-card">
+        <a href="#glute"><img src="gym/glute.jpeg" alt="Glute Kickback Machine" title="Glute Kickback Machine"></a>
+        <h3>Glute Kickback Machine</h3>
+    </div>
+    <div class="machine-card">
+        <a href="#hipthrust"><img src="gym/hipthrust.jpeg" alt="Hip Thrust Machine" title="Hip Thrust Machine"></a>
+        <h3>Hip Thrust Machine</h3>
+    </div>
+    <div class="machine-card">
+        <a href="#lying"><img src="gym/lying.jpeg" alt="Lying Leg Curl Machine" title="Lying Leg Curl Machine"></a>
+        <h3>Lying Leg Curl Machine</h3>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 1. Smith Machine -->
+    <div class="detail-section" id="smith">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/smith.jpeg" alt="Smith Machine">
+        <h2>Machine Name</h2><p>Smith Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Varies by exercise (Quadriceps, Chest, Shoulders)</li>
+            <li><b>Secondary:</b> Glutes, Hamstrings, Triceps, Core</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Position your body under or in front of the bar depending on the exercise.</li>
+            <li>Set the bar height and load the desired weight.</li>
+            <li>Grip the bar evenly on both sides.</li>
+            <li>Unrack the bar by rotating it to release the hooks.</li>
+            <li>Perform the movement along the fixed path of the machine.</li>
+            <li>Maintain control throughout the full range of motion.</li>
+            <li>Re-rack the bar by rotating it back into the hooks.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep a neutral spine throughout the movement.</li>
+            <li>Engage your core for stability.</li>
+            <li>Adjust your stance to match the bar path.</li>
+            <li>Control both lifting and lowering phases.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Poor body positioning relative to the bar path.</li>
+            <li>Relying too much on the machine for balance.</li>
+            <li>Locking joints aggressively.</li>
+            <li>Using excessive weight.</li>
+            <li>Ignoring full range of motion.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Adjust your stance, not the bar path, to fit your natural movement.</div>
+    </div>
+
+    <!-- 2. Leg Extension -->
+    <div class="detail-section" id="leg">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/leg.jpeg" alt="Leg Extension Machine">
+        <h2>Machine Name</h2><p>Leg Extension Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Quadriceps</li>
+            <li><b>Secondary:</b> None</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Sit on the machine with your back fully supported.</li>
+            <li>Place your ankles behind the padded bar.</li>
+            <li>Align your knees with the machine's pivot point.</li>
+            <li>Grip the handles for stability.</li>
+            <li>Extend your legs upward until almost straight.</li>
+            <li>Squeeze your quadriceps at the top.</li>
+            <li>Lower the weight slowly back to the start.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your back flat against the seat.</li>
+            <li>Align knees with the machine axis.</li>
+            <li>Move in a slow, controlled range.</li>
+            <li>Keep toes pointing forward.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Swinging the weight instead of controlling it.</li>
+            <li>Locking the knees forcefully.</li>
+            <li>Using excessive weight.</li>
+            <li>Lifting hips off the seat.</li>
+            <li>Partial range of motion.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Pause briefly at the top for a stronger quadriceps contraction.</div>
+    </div>
+
+    <!-- 3. Hack Squat -->
+    <div class="detail-section" id="hack">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/hack.jpeg" alt="Hack Squat Machine">
+        <h2>Machine Name</h2><p>Hack Squat Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Quadriceps</li>
+            <li><b>Secondary:</b> Glutes, Hamstrings, Calves</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Step into the machine and position your shoulders under the pads.</li>
+            <li>Place your feet shoulder-width apart on the platform.</li>
+            <li>Keep your back flat against the support.</li>
+            <li>Release the safety handles.</li>
+            <li>Lower your body by bending your knees slowly.</li>
+            <li>Go down until your thighs are about parallel.</li>
+            <li>Push through your heels to return up.</li>
+            <li>Stop just before locking your knees.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your back fully pressed against the pad.</li>
+            <li>Keep your knees aligned with your toes.</li>
+            <li>Engage your core throughout the movement.</li>
+            <li>Maintain a controlled tempo.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Letting the knees collapse inward.</li>
+            <li>Locking the knees at the top.</li>
+            <li>Using excessive weight.</li>
+            <li>Lifting heels off the platform.</li>
+            <li>Not going deep enough.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Push through your heels, not your toes.</div>
+    </div>
+
+    <!-- 4. Seated Leg Curl -->
+    <div class="detail-section" id="seated">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/seated.jpeg" alt="Seated Leg Curl Machine">
+        <h2>Machine Name</h2><p>Seated Leg Curl Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Hamstrings</li>
+            <li><b>Secondary:</b> Gastrocnemius</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Sit on the machine with your back fully supported.</li>
+            <li>Align your knees with the machine's pivot point.</li>
+            <li>Place your lower legs behind the padded lever.</li>
+            <li>Secure your thighs under the support pads.</li>
+            <li>Curl your legs back by bending your knees.</li>
+            <li>Squeeze your hamstrings at the end of the movement.</li>
+            <li>Return slowly to the starting position.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your back firmly against the seat.</li>
+            <li>Do not lift your hips during the movement.</li>
+            <li>Control both curl and return phases.</li>
+            <li>Keep movement smooth and steady.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Using momentum instead of control.</li>
+            <li>Lifting hips off the seat.</li>
+            <li>Using excessive weight.</li>
+            <li>Not using full range of motion.</li>
+            <li>Dropping the weight too quickly.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Hold the contraction for a second before returning slowly.</div>
+    </div>
+
+    <!-- 5. Hip Adductor -->
+    <div class="detail-section" id="hipadd">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/hip.jpeg" alt="Hip Adductor Machine">
+        <h2>Machine Name</h2><p>Hip Adductor Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Adductors (Inner Thigh)</li>
+            <li><b>Secondary:</b> Gracilis, Pectineus</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Sit on the machine with your back supported.</li>
+            <li>Place your legs outside the pads.</li>
+            <li>Adjust the starting position for a comfortable stretch.</li>
+            <li>Grip the handles for stability.</li>
+            <li>Bring your legs inward against the pads.</li>
+            <li>Squeeze your inner thighs at the end of the movement.</li>
+            <li>Return slowly to the starting position.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your back flat against the seat.</li>
+            <li>Move in a slow and controlled manner.</li>
+            <li>Avoid leaning forward or using momentum.</li>
+            <li>Keep your core engaged for stability.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Using momentum instead of muscle control.</li>
+            <li>Closing legs too fast without control.</li>
+            <li>Using excessive weight.</li>
+            <li>Partial range of motion.</li>
+            <li>Lifting hips off the seat.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Focus on a slow squeeze inward and control the return phase.</div>
+    </div>
+
+    <!-- 6. Leg Press -->
+    <div class="detail-section" id="legpress">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/legpress.jpeg" alt="Leg Press Machine">
+        <h2>Machine Name</h2><p>Leg Press Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Quadriceps</li>
+            <li><b>Secondary:</b> Glutes, Hamstrings, Calves</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Sit on the machine with your back flat against the pad.</li>
+            <li>Place your feet shoulder-width apart on the platform.</li>
+            <li>Release the safety handles.</li>
+            <li>Lower the platform by bending your knees slowly.</li>
+            <li>Stop when your knees reach about a 90-degree angle.</li>
+            <li>Push through your heels to extend your legs.</li>
+            <li>Stop just before locking your knees.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your lower back pressed against the seat.</li>
+            <li>Align your knees with your toes.</li>
+            <li>Keep your heels flat on the platform.</li>
+            <li>Control the movement throughout.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Locking the knees at the top.</li>
+            <li>Lowering the weight too fast.</li>
+            <li>Letting the lower back lift off the seat.</li>
+            <li>Placing feet too low on the platform.</li>
+            <li>Using excessive weight.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Control the descent more than the ascent.</div>
+    </div>
+
+    <!-- 7. Seated Calf Raise -->
+    <div class="detail-section" id="seatedcalf">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/seatedcalf.jpeg" alt="Seated Calf Raise Machine">
+        <h2>Machine Name</h2><p>Seated Calf Raise Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Soleus</li>
+            <li><b>Secondary:</b> Gastrocnemius</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Sit on the machine and place pads over your knees.</li>
+            <li>Position the balls of your feet on the footrest.</li>
+            <li>Adjust pad height to fit snugly.</li>
+            <li>Push up onto your toes as high as possible.</li>
+            <li>Hold briefly at the peak contraction.</li>
+            <li>Lower your heels slowly below the footrest level.</li>
+            <li>Repeat with full range of motion.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your torso upright throughout.</li>
+            <li>Full stretch at the bottom adds muscle length.</li>
+            <li>Avoid bouncing at the bottom.</li>
+            <li>Perform slow, deliberate reps.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Using momentum to bounce the weight.</li>
+            <li>Not reaching full extension.</li>
+            <li>Placing feet incorrectly on the plate.</li>
+            <li>Using excessive weight.</li>
+            <li>Skipping the stretch at the bottom.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Go slow on the way down for maximum soleus activation.</div>
+    </div>
+
+    <!-- 8. Hip Abductor -->
+    <div class="detail-section" id="hipabductor">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/hipabductor.jpeg" alt="Hip Abductor Machine">
+        <h2>Machine Name</h2><p>Hip Abductor Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Gluteus Medius, Gluteus Minimus</li>
+            <li><b>Secondary:</b> Tensor Fasciae Latae</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Sit on the machine with your back against the support.</li>
+            <li>Place your legs inside the pads.</li>
+            <li>Adjust the pads so your knees are at a comfortable position.</li>
+            <li>Push your legs outward against the pads.</li>
+            <li>Squeeze your outer glutes at the widest point.</li>
+            <li>Return slowly to the starting position.</li>
+            <li>Keep movements controlled throughout.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Sit tall and keep your core engaged.</li>
+            <li>Avoid leaning to one side.</li>
+            <li>Move symmetrically on both sides.</li>
+            <li>Slow, controlled reps beat fast ones.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Using too much weight and losing form.</li>
+            <li>Leaning the torso sideways.</li>
+            <li>Not achieving full range.</li>
+            <li>Bouncing or jerking the weight.</li>
+            <li>Lifting hips off the seat.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Squeeze and hold at the widest point for 1 second.</div>
+    </div>
+
+    <!-- 9. Standing Calf Raise -->
+    <div class="detail-section" id="standing">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/standing.jpeg" alt="Standing Calf Raise Machine">
+        <h2>Machine Name</h2><p>Standing Calf Raise Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Gastrocnemius</li>
+            <li><b>Secondary:</b> Soleus</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Step under the shoulder pads and position the balls of your feet on the platform.</li>
+            <li>Keep your legs straight with a slight bend at the knee.</li>
+            <li>Rise up onto your toes as high as possible.</li>
+            <li>Hold at the top for a moment.</li>
+            <li>Lower your heels as far as comfortable below the platform.</li>
+            <li>Repeat with a full range of motion.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your back straight and core tight.</li>
+            <li>Equal weight on both feet.</li>
+            <li>Rise fully onto the toes.</li>
+            <li>Control the descent fully.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Bending the knees excessively.</li>
+            <li>Using partial range of motion.</li>
+            <li>Rushing through reps.</li>
+            <li>Not loading the stretch at the bottom.</li>
+            <li>Using excessive weight.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Rise all the way up and lower all the way down for full engagement.</div>
+    </div>
+
+    <!-- 10. Glute Kickback -->
+    <div class="detail-section" id="glute">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/glute.jpeg" alt="Glute Kickback Machine">
+        <h2>Machine Name</h2><p>Glute Kickback Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Gluteus Maximus</li>
+            <li><b>Secondary:</b> Hamstrings, Core</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Position yourself on the machine per the manufacturer instructions.</li>
+            <li>Secure your foot or lower leg against the pad.</li>
+            <li>Keep your supporting leg stable.</li>
+            <li>Push the pad back and up in a controlled arc.</li>
+            <li>Squeeze your glute at the peak of the movement.</li>
+            <li>Return slowly to the start without dropping the weight.</li>
+            <li>Complete all reps on one side before switching.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your hips square and level.</li>
+            <li>Avoid rotating your torso.</li>
+            <li>Engage your core throughout.</li>
+            <li>Focus on the glute, not the lower back.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Arching the lower back excessively.</li>
+            <li>Using momentum instead of glute contraction.</li>
+            <li>Not squeezing at the top.</li>
+            <li>Kicking too high and losing form.</li>
+            <li>Using excessive weight.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Think about pushing through the heel to better activate the glute.</div>
+    </div>
+
+    <!-- 11. Hip Thrust -->
+    <div class="detail-section" id="hipthrust">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/hipthrust.jpeg" alt="Hip Thrust Machine">
+        <h2>Machine Name</h2><p>Hip Thrust Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Gluteus Maximus</li>
+            <li><b>Secondary:</b> Hamstrings, Core, Hip Flexors</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Sit on the machine and position the pad across your hips.</li>
+            <li>Plant your feet flat on the platform shoulder-width apart.</li>
+            <li>Lean back against the support.</li>
+            <li>Push your hips upward by squeezing your glutes.</li>
+            <li>Drive up until your body forms a straight line from knees to shoulders.</li>
+            <li>Hold at the top for a beat.</li>
+            <li>Lower your hips slowly back down.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your chin tucked and core braced.</li>
+            <li>Feet flat and knees tracking over toes.</li>
+            <li>Drive through heels, not toes.</li>
+            <li>Full extension at the top.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Hyperextending the lower back at the top.</li>
+            <li>Not driving through the heels.</li>
+            <li>Using momentum to swing the weight.</li>
+            <li>Incomplete range of motion.</li>
+            <li>Excessive weight too early.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Squeeze your glutes hard at the top and hold for 2 seconds.</div>
+    </div>
+
+    <!-- 12. Lying Leg Curl -->
+    <div class="detail-section" id="lying">
+        <a class="back-btn" href="#top">&#8593; Back to All Machines</a>
+        <img src="gym/lying.jpeg" alt="Lying Leg Curl Machine">
+        <h2>Machine Name</h2><p>Lying Leg Curl Machine</p>
+        <h2>Target Muscles</h2>
+        <ul>
+            <li><b>Primary:</b> Hamstrings</li>
+            <li><b>Secondary:</b> Gastrocnemius, Glutes</li>
+        </ul>
+        <h2>How to Use</h2>
+        <ol>
+            <li>Lie face-down on the machine pad.</li>
+            <li>Align your knees just over the edge of the bench.</li>
+            <li>Place your ankles under the padded lever.</li>
+            <li>Hold the handles for support.</li>
+            <li>Curl your legs toward your glutes by bending the knees.</li>
+            <li>Squeeze your hamstrings at full flexion.</li>
+            <li>Lower the weight slowly and with control.</li>
+        </ol>
+        <h2>Proper Form</h2>
+        <ul>
+            <li>Keep your hips pressed down throughout.</li>
+            <li>Avoid arching your lower back.</li>
+            <li>Use smooth, controlled movement.</li>
+            <li>Flex at the knee, not the hip.</li>
+        </ul>
+        <h2>Common Mistakes</h2>
+        <ul>
+            <li>Lifting your hips to assist the curl.</li>
+            <li>Using too much weight.</li>
+            <li>Dropping the weight without control.</li>
+            <li>Not achieving full range of motion.</li>
+            <li>Jerking through the movement.</li>
+        </ul>
+        <div class="tip-box">&#128161; Quick Tip: Point your toes during the curl for a stronger hamstring contraction.</div>
+    </div>
+
+    <div id="contact">
+        <h2>Contact Us</h2>
+        <p>📧 Email: <a href="mailto:myhealth@email.com">myhealth@email.com</a></p>
+        <p>📞 Phone: <a href="tel:+201000000000">+20 100 000 0000</a></p>
+        <p>📍 Cairo, Egypt</p>
+        <p style="margin-top:15px;">Follow us on social media for daily health tips!</p>
+    </div>
+
+    <button id="dark-toggle" title="Dark / Light Mode" onclick="
+        document.body.classList.toggle('dark');
+        this.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    ">🌙</button>
+
+    <div class="bottom-nav">
+        <a href="profile.html">👤 Profile</a>
+        <a href="#contact">📬 Contact Us</a>
+        <a href="index.html">🏠 Home Page</a>
+    </div>
+
+</body>
+</html>

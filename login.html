@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MY HEALTH</title>
+    <link rel = "icon" href="WhatsApp Image 2026-05-11 at 10.55.35 AM.jpeg">
+</head>
+<style>
+    h1 {
+        
+        background-color: rgb(0, 71, 171);
+        padding: 10px;
+        position: fixed;
+        top:0;
+        left: 0;
+        width : 100%;
+        margin: 0;
+        z-index: 1000;
+        position:relative;
+        box-shadow: 0 2px 5px rgba (0,0,0,0.1);
+        border-radius: 5px;
+       }
+       #login {
+        background-color: rgb(102, 191, 42);
+        padding: 5px 10px ;
+        border: none;
+        border-radius: 4px;
+        position : absolute;
+        top: 5px;
+        left: 5px;
+       }
+       .var1 {
+        background-color: rgb(0, 71, 171);
+        position: fixed;
+        bottom:0;
+        left: 0;
+        width :100%;
+        z-index: 1000;
+        box-shadow: 0 -2px 5px rgba (0,0,0,0.2);
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+
+       }
+       .var1 a { 
+        padding: 8px 16px;
+        background-color: rgb(102,191,42);
+       }
+</style>
+
+<body>
+    <var>
+        <h1 align = "center">my health 
+        <a id = "login" href="login.html">log in </a>
+        <img  align = "right" src = "WhatsApp Image 2026-05-11 at 10.55.35 AM.jpeg" width = "50" height="50">
+          
+        </h1>
+    </var>
+
+    <h2>Registration Form</h2>
+
+    <form>
+
+        <label>Full Name:</label><br>
+        <input type="text" required><br><br>
+
+        <label>Phone Number:</label><br>
+        <input type="tel" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" required><br><br>
+
+        <label>Height (cm):</label><br>
+        <input type="number"><br><br>
+
+        <label>Weight (kg):</label><br>
+        <input type="number"><br><br>
+
+        <label>Age (years):</label><br>
+        <input type="number"><br><br>
+
+        <label>Gender:</label><br>
+        <input type="radio" name="gender" required> Male
+        <input type="radio" name="gender" required> Female
+        <br><br>
+
+        <label>Goal:</label><br>
+        <input type="radio" name="goal" required> Weight Gain<br>
+        <input type="radio" name="goal" required> Weight Loss<br>
+        <input type="radio" name="goal" required> Stay Healthy
+        <br><br>
+
+        <label>Physical Activity:</label><br>
+        <input type="radio" name="activity" required> 3 days per week<br>
+        <input type="radio" name="activity" required> 5 days per week<br>
+        <input type="radio" name="activity" required> 6 days per week
+        <br><br>
+
+        <input type="checkbox" required>
+        <label>I agree that the data is correct</label>
+        <br><br>
+
+        <input type="submit" value="Submit">
+
+    </form>
+    <br>
+    <br>
+    <var class = "var1">
+        <a href = "profile.html"  >profile</a>
+       <a href ="#comunicate" >contact us</a>
+       <a href = "index.html" >Home page </a>
+   </var>
+
+</body>
+</html>
